@@ -16,6 +16,6 @@ class Link extends Model
         'description',
         'position',
         'user_id',
-        'issue_id'
+        'issue_id',
     ];
 }
