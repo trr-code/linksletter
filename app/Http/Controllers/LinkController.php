@@ -6,39 +6,42 @@ use App\Http\Requests\StoreLinkRequest;
 use App\Http\Requests\UpdateLinkRequest;
 use App\Models\Link;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 
 class LinkController extends Controller
 {
-    public function index(): View
+    public function index()
     {
         $links = Link::query()
+            // Filter by tenant id (user_id)
             ->where('user_id', auth()->id())
             ->orderBy('id', 'desc')
             ->paginate(50);
 
-        return view('links.index', compact('links'));
+        return view('links.index', [
+            'links' => $links,
+        ]);
     }
 
-    public function create(): View
+    public function create()
     {
         $users = User::all();
 
-        return view('links.create', compact('users'));
+        return view('links.create', [
+            'users' => $users,
+        ]);
     }
 
-    public function store(StoreLinkRequest $request): RedirectResponse
+    public function store(StoreLinkRequest $request)
     {
-        $validated = $request->validated();
-        $validated['user_id'] = auth()->id();
+        $link = Link::create(
+            $request->validated() + [
+                'user_id' => auth()->id(),
+            ]
+        );
 
-        $link = Link::create($validated);
-
+        // If there is no position, set it to the last
         if (! $link->position) {
-            /** @var int|null $maxPosition */
-            $maxPosition = Link::max('position');
-            $link->position = is_null($maxPosition) ? 1 : (int) $maxPosition + 1;
+            $link->position = Link::max('position') + 1;
             $link->save();
         }
 
@@ -46,16 +49,20 @@ class LinkController extends Controller
             ->with('message', 'Link created successfully.');
     }
 
-    public function edit(Link $link): View
+    public function edit(Link $link)
     {
+        // Check if user is the owner of the link
         abort_unless($link->user_id === auth()->id(), 404);
 
         $users = User::all();
 
-        return view('links.edit', compact('link', 'users'));
+        return view('links.edit', [
+            'link' => $link,
+            'users' => $users,
+        ]);
     }
 
-    public function update(UpdateLinkRequest $request, Link $link): RedirectResponse
+    public function update(UpdateLinkRequest $request, Link $link)
     {
         abort_unless($link->user_id === auth()->id(), 404);
 
@@ -65,7 +72,7 @@ class LinkController extends Controller
             ->with('message', 'Link updated successfully.');
     }
 
-    public function destroy(Link $link): RedirectResponse
+    public function destroy(Link $link)
     {
         abort_unless($link->user_id === auth()->id(), 404);
 
