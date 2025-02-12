@@ -24,31 +24,29 @@
                     <table class="table-auto w-full mt-4 border">
                         <thead>
                             <tr>
-                                <th class="px-4 py-2">Title</th>
-                                <th class="px-4 py-2">URL</th>
-                                <th class="px-4 py-2">Actions</th>
+                                <th class="px-4 py-2 w-1/3">Title</th>
+                                <th class="px-4 py-2 w-1/2">URL</th>
+                                <th class="px-4 py-2 w-1/6">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($links as $link)
                                 <tr>
                                     <td class="border px-4 py-2">{{ $link->title }}</td>
-                                    <td class="border px-4 py-2">
+                                    <td class="border px-4 py-2 truncate">
                                         <a href="{{ $link->url }}" target="_blank"
                                             class="text-blue-400 underline underline-offset-3 decoration-blue-200">{{ $link->url }}</a>
                                     </td>
-                                    <td class="border px-4 py-2">
+                                    <td class="border px-4 py-2 whitespace-nowrap">
                                         <a href="{{ route('links.edit', $link->id) }}"
-                                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded">Edit</a>
+                                            class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</a>
                                         <form action="{{ route('links.destroy', $link->id) }}" method="POST"
                                             class="inline-block"
                                             onsubmit="return confirm('Are you sure you want to delete this link?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                                Delete
-                                            </button>
+                                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
                                         </form>
                                     </td>
                                 </tr>
