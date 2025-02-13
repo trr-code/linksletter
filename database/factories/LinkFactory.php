@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Issue;
 use App\Models\Link;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -29,8 +28,7 @@ class LinkFactory extends Factory
             'position' => $this->faker->randomNumber(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-
-            'issue_id' => Issue::factory(),
+            'issue_id' => null,
             'user_id' => User::factory(),
         ];
     }

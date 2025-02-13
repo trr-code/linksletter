@@ -18,8 +18,7 @@
                     <div class="mt-4">
                         @if ($availableLinks)
                             <a href="{{ route('issues.create') }}"
-                                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add New
-                                Issue</a>
+                                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add New Issue</a>
                         @else
                             <p class="text-red-500">No links available to create a new issue</p>
                         @endif
