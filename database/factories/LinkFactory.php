@@ -28,9 +28,7 @@ class LinkFactory extends Factory
             'position' => $this->faker->randomNumber(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-
-            // Disabled for now, since we don't have issues workflow yet
-            // 'issue_id' => Issue::factory(),
+            'issue_id' => null,
             'user_id' => User::factory(),
         ];
     }
